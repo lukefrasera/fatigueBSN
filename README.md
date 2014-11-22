@@ -3,6 +3,9 @@ fatigueBSN
 
 
 #Install Python Mindwave Library
+```
+git clone git@github.com:robintibor/python-mindwave-mobile.git
+```
 Some scripts to access the data streamed by the **Neurosky Mindwave Mobile** Headset over Bluetooth on Linux.
 
 Requirements:
