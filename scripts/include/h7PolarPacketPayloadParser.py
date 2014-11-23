@@ -1,5 +1,4 @@
-from MindwaveDataPoints import RawDataPoint, PoorSignalLevelDataPoint,\
-    AttentionDataPoint, MeditationDataPoint, BlinkDataPoint, EEGPowersDataPoint
+from h7PolarDataPoints import h7PolarDataPoint
 
 EXTENDED_CODE_BYTE = 0x55
 
@@ -62,17 +61,7 @@ class MindwavePacketPayloadParser:
         
     def _createDataPoint(self, dataRowCode, dataRowValueBytes):
         if (dataRowCode == 0x02):
-            return PoorSignalLevelDataPoint(dataRowValueBytes)
-        elif (dataRowCode == 0x04):
-            return AttentionDataPoint(dataRowValueBytes)
-        elif (dataRowCode == 0x05):
-            return MeditationDataPoint(dataRowValueBytes)
-        elif (dataRowCode == 0x16):
-            return BlinkDataPoint(dataRowValueBytes)
-        elif (dataRowCode == 0x80):
-            return RawDataPoint(dataRowValueBytes)
-        elif (dataRowCode == 0x83):
-            return EEGPowersDataPoint(dataRowValueBytes)
+            return h7PolarDataPoint(dataRowValueBytes)
         else:
             assert False 
         
