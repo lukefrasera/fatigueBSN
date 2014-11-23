@@ -2,7 +2,7 @@ from h7PolarDataPoints import h7PolarDataPoint
 
 EXTENDED_CODE_BYTE = 0x55
 
-class MindwavePacketPayloadParser:
+class h7PolarPacketPayloadParser:
     
     def __init__(self, payloadBytes):
         self._payloadBytes = payloadBytes

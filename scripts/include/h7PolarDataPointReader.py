@@ -1,16 +1,16 @@
-from MindwaveMobileRawReader import MindwaveMobileRawReader
+from h7PolarRawReader import h7PolarRawReader
 import struct
 import collections
 
-from MindwavePacketPayloadParser import MindwavePacketPayloadParser
+from h7PolarPacketPayloadParser import h7PolarPacketPayloadParser
 
-class MindwaveDataPointReader:
+class h7PolarDataPointReader:
     def __init__(self):
-        self._mindwaveMobileRawReader = MindwaveMobileRawReader()
+        self._h7PolarMobileRawReader = h7PolarMobileRawReader()
         self._dataPointQueue = collections.deque()
 
     def start(self):
-        self._mindwaveMobileRawReader.connectToMindWaveMobile()
+        self._h7PolarMobileRawReader.connectToh7PolarMobile()
         
     def readNextDataPoint(self):
         if (not self._moreDataPointsInQueue()):
@@ -35,15 +35,15 @@ class MindwaveDataPointReader:
             return self._readDataPointsFromOnePacket();
         else:
             dataPoints = self._readDataPointsFromPayload(payloadBytes)
-        self._mindwaveMobileRawReader.clearAlreadyReadBuffer()
+        self._h7PolarMobileRawReader.clearAlreadyReadBuffer()
         return dataPoints;
         
     def _goToStartOfNextPacket(self):
         while(True):
-            byte = self._mindwaveMobileRawReader.getByte()
-            if (byte == MindwaveMobileRawReader.START_OF_PACKET_BYTE):  # need two of these bytes at the start..
-                byte = self._mindwaveMobileRawReader.getByte()
-                if (byte == MindwaveMobileRawReader.START_OF_PACKET_BYTE):
+            byte = self._h7PolarMobileRawReader.getByte()
+            if (byte == h7PolarMobileRawReader.START_OF_PACKET_BYTE):  # need two of these bytes at the start..
+                byte = self._h7PolarMobileRawReader.getByte()
+                if (byte == h7PolarMobileRawReader.START_OF_PACKET_BYTE):
                     # now at the start of the packet..
                     return;
 
@@ -53,12 +53,12 @@ class MindwaveDataPointReader:
             return payloadBytes, checkSum
     
     def _readPayloadLength(self):
-        payloadLength = self._mindwaveMobileRawReader.getByte()
+        payloadLength = self._h7PolarMobileRawReader.getByte()
         return payloadLength
 
     def _readPacket(self, payloadLength):
-        payloadBytes = self._mindwaveMobileRawReader.getBytes(payloadLength)
-        checkSum = self._mindwaveMobileRawReader.getByte()
+        payloadBytes = self._h7PolarMobileRawReader.getBytes(payloadLength)
+        checkSum = self._h7PolarMobileRawReader.getByte()
         return payloadBytes, checkSum
 
     def _checkSumIsOk(self, payloadBytes, checkSum):
@@ -71,7 +71,7 @@ class MindwaveDataPointReader:
         return ~lastEightBits + 256
         
     def _readDataPointsFromPayload(self, payloadBytes):
-        payloadParser = MindwavePacketPayloadParser(payloadBytes)
+        payloadParser = h7PolarPacketPayloadParser(payloadBytes)
         return payloadParser.parseDataPoints();
     
     

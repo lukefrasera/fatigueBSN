@@ -8,7 +8,7 @@ class h7PolarRawReader:
         self._buffer = [];
         self._bufferPosition = 0;
         
-    def connectToMindWaveMobile(self):
+    def connectToh7PolarMobile(self):
         # connecting via bluetooth RFCOMM
         self.h7PolarSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         h7PolarAddress = '20:68:9D:A8:4B:A8';
