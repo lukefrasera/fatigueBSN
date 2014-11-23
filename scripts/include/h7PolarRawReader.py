@@ -2,35 +2,35 @@ import bluetooth
 import time
 
 
-class MindwaveMobileRawReader:
-    START_OF_PACKET_BYTE = 0xaa;
+class h7PolarRawReader:
+    START_OF_PACKET_BYTE = 0xfe;
     def __init__(self):
         self._buffer = [];
         self._bufferPosition = 0;
         
     def connectToMindWaveMobile(self):
         # connecting via bluetooth RFCOMM
-        self.mindwaveMobileSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        mindwaveMobileAddress = '20:68:9D:A8:4B:A8';
+        self.h7PolarSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        h7PolarAddress = '20:68:9D:A8:4B:A8';
         while(True):
             try:
-                self.mindwaveMobileSocket.connect((mindwaveMobileAddress, 1))
+                self.h7PolarSocket.connect((h7PolarAddress, 1))
                 return;
             except bluetooth.btcommon.BluetoothError as error:
                 print "Could not connect: ", error, "; Retrying in 5s..."
                 time.sleep(5) 
     
     def _readMoreBytesIntoBuffer(self, amountOfBytes):
-        newBytes = self._readBytesFromMindwaveMobile(amountOfBytes)
+        newBytes = self._readBytesFromh7PolarMobile(amountOfBytes)
         self._buffer += newBytes
     
-    def _readBytesFromMindwaveMobile(self, amountOfBytes):
+    def _readBytesFromh7PolarMobile(self, amountOfBytes):
         missingBytes = amountOfBytes
         receivedBytes = ""
         # Sometimes the socket will not send all the requested bytes
         # on the first request, therefore a loop is necessary...
         while(missingBytes > 0):
-            receivedBytes += self.mindwaveMobileSocket.recv(missingBytes)
+            receivedBytes += self.h7PolarSocket.recv(missingBytes)
             missingBytes = amountOfBytes - len(receivedBytes)
         return receivedBytes;
 
