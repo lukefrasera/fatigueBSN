@@ -8,10 +8,10 @@ class h7PolarRawReader:
         self._buffer = [];
         self._bufferPosition = 0;
         
-    def connectToh7PolarMobile(self):
+    def connectToh7Polar(self):
         # connecting via bluetooth RFCOMM
         self.h7PolarSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        h7PolarAddress = '00:22:d0:3e:4b:04';
+        h7PolarAddress = '00:22:D0:3E:4B:04';
         while(True):
             try:
                 self.h7PolarSocket.connect((h7PolarAddress, 1))
@@ -21,10 +21,10 @@ class h7PolarRawReader:
                 time.sleep(5) 
     
     def _readMoreBytesIntoBuffer(self, amountOfBytes):
-        newBytes = self._readBytesFromh7PolarMobile(amountOfBytes)
+        newBytes = self._readBytesFromh7Polar(amountOfBytes)
         self._buffer += newBytes
     
-    def _readBytesFromh7PolarMobile(self, amountOfBytes):
+    def _readBytesFromh7Polar(self, amountOfBytes):
         missingBytes = amountOfBytes
         receivedBytes = ""
         # Sometimes the socket will not send all the requested bytes

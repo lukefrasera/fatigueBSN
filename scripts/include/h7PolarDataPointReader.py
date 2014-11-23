@@ -6,11 +6,13 @@ from h7PolarPacketPayloadParser import h7PolarPacketPayloadParser
 
 class h7PolarDataPointReader:
     def __init__(self):
-        self._h7PolarMobileRawReader = h7PolarMobileRawReader()
+        self._h7PolarRawReader = h7PolarRawReader()
         self._dataPointQueue = collections.deque()
 
     def start(self):
-        self._h7PolarMobileRawReader.connectToh7PolarMobile()
+	print ("attempting to connect")
+        self._h7PolarRawReader.connectToh7Polar()
+	print ("finished attempting to connect")
         
     def readNextDataPoint(self):
         if (not self._moreDataPointsInQueue()):
@@ -35,13 +37,13 @@ class h7PolarDataPointReader:
             return self._readDataPointsFromOnePacket();
         else:
             dataPoints = self._readDataPointsFromPayload(payloadBytes)
-        self._h7PolarMobileRawReader.clearAlreadyReadBuffer()
+        self._h7PolarRawReader.clearAlreadyReadBuffer()
         return dataPoints;
         
     def _goToStartOfNextPacket(self):
         while(True):
-            byte = self._h7PolarMobileRawReader.getByte()
-            if (byte == h7PolarMobileRawReader.START_OF_PACKET_BYTE):  # need two of these bytes at the start..
+            byte = self._h7PolarRawReader.getByte()
+            if (byte == h7PolarRawReader.START_OF_PACKET_BYTE):  # need two of these bytes at the start..
                 # now at the start of the packet..
                 return;
 
@@ -51,12 +53,12 @@ class h7PolarDataPointReader:
             return payloadBytes, checkSum
     
     def _readPayloadLength(self):
-        payloadLength = self._h7PolarMobileRawReader.getByte()
+        payloadLength = self._h7PolarRawReader.getByte()
         return payloadLength
 
     def _readPacket(self, payloadLength):
-        payloadBytes = self._h7PolarMobileRawReader.getBytes(payloadLength)
-        checkSum = self._h7PolarMobileRawReader.getByte()
+        payloadBytes = self._h7PolarRawReader.getBytes(payloadLength)
+        checkSum = self._h7PolarRawReader.getByte()
         return payloadBytes, checkSum
 
     def _checkSumIsOk(self, payloadBytes, checkSum):
