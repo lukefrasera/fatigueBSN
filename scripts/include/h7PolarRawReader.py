@@ -11,7 +11,7 @@ class h7PolarRawReader:
     def connectToh7PolarMobile(self):
         # connecting via bluetooth RFCOMM
         self.h7PolarSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        h7PolarAddress = '20:68:9D:A8:4B:A8';
+        h7PolarAddress = '00:22:d0:3e:4b:04';
         while(True):
             try:
                 self.h7PolarSocket.connect((h7PolarAddress, 1))
