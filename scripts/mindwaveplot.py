@@ -30,6 +30,9 @@ def main():
 
   attention_datapoint_vals = [point.attentionValue for point in attention_datapoints]
 
+
+  # will the following give us a good speed increase over using list comprehensions?
+  # or will the readability be better?
   delta_points = []
   theta_points = []
   lowAlpha_points = []
@@ -56,14 +59,14 @@ def main():
   # or something)
 
   # plot the EEG components (scale: 0 - large)
-  pl.plot(range(len(eeg_datapoints)), delta_points, label="Delta")
-  pl.plot(range(len(eeg_datapoints)), theta_points, label="Theta")
-  pl.plot(range(len(eeg_datapoints)), lowAlpha_points, label="Low-Alpha")
-  pl.plot(range(len(eeg_datapoints)), highAlpha_points, label="High-Alpha")
-  pl.plot(range(len(eeg_datapoints)), lowBeta_points, label="Low-Beta")
-  pl.plot(range(len(eeg_datapoints)), highBeta_points, label="High-Beta")
-  pl.plot(range(len(eeg_datapoints)), lowGamma_points, label="Low-Gamma")
-  pl.plot(range(len(eeg_datapoints)), midGamma_points, label="Mid-Gamma")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(delta_points)) for i in delta_points], label="Delta")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(theta_points)) for i in theta_points], label="Theta")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(lowAlpha_points)) for i in lowAlpha_points], label="Low-Alpha")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(highAlpha_points)) for i in highAlpha_points], label="High-Alpha")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(lowBeta_points)) for i in lowBeta_points], label="Low-Beta")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(highBeta_points)) for i in highBeta_points], label="High-Beta")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(lowGamma_points)) for i in lowGamma_points], label="Low-Gamma")
+  pl.plot(range(len(eeg_datapoints)), [float(i)/float(sum(midGamma_points)) for i in midGamma_points], label="Mid-Gamma")
 
   pl.xlabel("Time Step")
   pl.ylabel("Reading Value")
