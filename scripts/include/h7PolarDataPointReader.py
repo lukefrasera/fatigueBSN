@@ -42,10 +42,8 @@ class h7PolarDataPointReader:
         while(True):
             byte = self._h7PolarMobileRawReader.getByte()
             if (byte == h7PolarMobileRawReader.START_OF_PACKET_BYTE):  # need two of these bytes at the start..
-                byte = self._h7PolarMobileRawReader.getByte()
-                if (byte == h7PolarMobileRawReader.START_OF_PACKET_BYTE):
-                    # now at the start of the packet..
-                    return;
+                # now at the start of the packet..
+                return;
 
     def _readOnePacket(self):
             payloadLength = self._readPayloadLength();

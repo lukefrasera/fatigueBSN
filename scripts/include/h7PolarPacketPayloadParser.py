@@ -10,16 +10,18 @@ class h7PolarPacketPayloadParser:
         
     def parseDataPoints(self):
         dataPoints = []
-        while (not self._atEndOfPayloadBytes()):
-            dataPoint = self._parseOneDataPoint()
-            dataPoints.append(dataPoint)
+        # while (not self._atEndOfPayloadBytes()):
+        #     dataPoint = self._parseOneDataPoint()
+        #     dataPoints.append(dataPoint)
+        dataPoint = h7PolarDataPoint(self.payloadBytes)
+        dataPoints.append(dataPoint)
         return dataPoints
         
     def _atEndOfPayloadBytes(self):
         return self._payloadIndex == len(self._payloadBytes)
     
     def _parseOneDataPoint(self):
-        dataRowCode = self._extractDataRowCode();
+        # dataRowCode = self._extractDataRowCode();
         dataRowValueBytes = self._extractDataRowValueBytes(dataRowCode)
         return self._createDataPoint(dataRowCode, dataRowValueBytes)
     
