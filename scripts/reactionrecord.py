@@ -7,10 +7,10 @@ from math import sqrt, pow
 
 
 qwertyKeyboardArrayMissing = [
-    ['`','1','2','3','4','5','6','7','8','9','0','-','='],
-    ['q','w','e','r','t','y','u','i','o','p','[',']','\\'],
-    ['a','s','d','f','g','h','j','k','l',';','\''],
-    ['z','x','c','v','b','n','m',',','.','/']
+    ['1','2','3','4','5','6','7','8','9','0'],
+    ['q','w','e','r','t','y','u','i','o','p','[',']'],
+    ['a','s','d','f','g','h','j','k','l'],
+    ['z','x','c','v','b','n','m']
     ]
 
 def read_single_keypress():
@@ -90,7 +90,7 @@ def main():
       print (meanReflex, varReflex)
       print (meanAccuracy, varAccuracy)
       data.append([time.time(), meanReflex, varReflex, meanAccuracy, varAccuracy])
-      print ("Press Space To run again or another key to store store:")
+      print ("Press Space To run again or another key to stop and store:")
       if read_single_keypress() != ' ':
         raise KeyboardInterrupt
   except KeyboardInterrupt:
