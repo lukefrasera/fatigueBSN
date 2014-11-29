@@ -90,7 +90,7 @@ def main():
       print (meanReflex, varReflex)
       print (meanAccuracy, varAccuracy)
       data.append([time.time(), meanReflex, varReflex, meanAccuracy, varAccuracy])
-      print ("Press Space To end again and store:")
+      print ("Press Space To run again or another key to store store:")
       if read_single_keypress() != ' ':
         raise KeyboardInterrupt
   except KeyboardInterrupt:
