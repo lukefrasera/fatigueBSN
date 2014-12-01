@@ -26,9 +26,10 @@ def main():
         print index
   except KeyboardInterrupt:
     pass
-
+  fmt = 'ddddddddd'
   dataFormat = []
   file_ = open(sys.argv[1], 'wb')
+  file_.write(fmt.ljust(25,' '))
   for i in xrange(len(eeg_datapoints)):
     timestamp = attention_datapoints[i][0]
     attention = attention_datapoints[i][1]
@@ -41,7 +42,8 @@ def main():
     lowgamma  = eeg_datapoints[i][1].lowGamma
     midgamma = eeg_datapoints[i][1].midGamma
 
-    s = struct.pack('ddddddddd',timestamp, delta, theta, lowalpha, highalpha, lowbeta, highbeta, lowgamma, midgamma)
+
+    s = struct.pack(fmt,timestamp, delta, theta, lowalpha, highalpha, lowbeta, highbeta, lowgamma, midgamma)
     file_.write(s)
   file_.close()
 
