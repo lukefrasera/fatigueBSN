@@ -1,9 +1,15 @@
 from bluetooth import *
 import sys
 
-addr = '0x0013'
-uuid = '00:22:D0:3E:4B:04'
-service_matches = find_service(uuid = uuid, address = addr)
+addr = "00:22:D0:3E:4B:04"
+uuid = "0000180d-0000-1000-8000-00805f9b34fb"
+
+nbd = discover_devices(lookup_names=True)
+
+for addr, name in nbd:
+  print "Address: %s Name: %s" % (addr, name)
+service_matches = find_service(uuid =uuid, address=addr)
+
 
 if len(service_matches) <= 0:
     print("No device found")
