@@ -4,7 +4,7 @@ import sys, struct
 
 def unpack_binary_data_into_list(file_name):
   data_points = []
-  file_ = open(filename)
+  file_ = open(file_name)
   fmt = file_.read(25).rstrip()
   struct_size = struct.calcsize(fmt)
 

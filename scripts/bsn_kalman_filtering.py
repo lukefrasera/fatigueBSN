@@ -1,19 +1,22 @@
-from mergeSensorData import *
+#!/usr/bin/env python
+
+from __future__ import print_function
+from mergeSensorData import unpack_binary_data_into_list
 from pykalman import KalmanFilter
+import struct
+import string
 
 
-BSN_DATA_FILE_NAME = "bsn_data.dat"
+BSN_DATA_FILE_NAME =\
+	"/home/t/Desktop/fatigueBSN/fatigue_test_data/LukeFraser_Nov_30_IMU.dat"
 FILTERED_BSN_DATA_FILE_NAME = "filtered_bsn_data.dat"
-MODEL_DIMENSIONALITY = 3 +  # IMU
-					   3 +  # Mindwave
-				       0    # PH7
-
-if __name__ == "__main__":
-	main()
 
 def main():
 	# get the data
 	bsn_data, data_format = unpack_binary_data_into_list(BSN_DATA_FILE_NAME)
+	print("format string: {}".format(data_format))
+	for datum in bsn_data:
+		print(datum)
 
 	# initialize filter
 	# (all constructor parameters have defaults, and pykalman supposedly does a
@@ -26,8 +29,11 @@ def main():
 
 	# write the data to a new file
 	with open(FILTERED_BSN_DATA_FILE_NAME, "wb") as filtered_file:
-		filtered_file.write(ljust(25, data_format))
+		filtered_file.write(string.ljust(data_format, 25))
 		for filtered_item in filtered_bsn_data:
-			filtered_file.write(struct.pack(data_format, filtered_item))
+			print(filtered_item)
+			filtered_file.write(struct.pack(data_format, *filtered_item))
 		filtered_file.close()
 
+if __name__ == "__main__":
+	main()
