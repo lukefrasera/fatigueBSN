@@ -13,7 +13,7 @@ def unpack_binary_data_into_list(file_name):
       data_tuple = struct.unpack(fmt, packed_struct)
       data_points.append(data_tuple)
   file_.close()
-  return data_points
+  return data_points, fmt
 
 
 def packed_structs_from_file(file_, struct_size):
