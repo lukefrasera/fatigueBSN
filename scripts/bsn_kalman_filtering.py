@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from mergeSensorData import unpack_binary_data_into_list
+import numpy as np
 from pykalman import KalmanFilter
 import struct
 import string
@@ -13,19 +14,39 @@ FILTERED_BSN_DATA_FILE_NAME = "filtered_bsn_data.dat"
 
 def main():
 	# get the data
-	bsn_data, data_format = unpack_binary_data_into_list(BSN_DATA_FILE_NAME)
-	print("format string: {}".format(data_format))
-	for datum in bsn_data:
-		print(datum)
+	readings, data_format = unpack_binary_data_into_list(BSN_DATA_FILE_NAME)
+	# just the data/readings, no timestamps
+	bsn_data = np.array([x[1:] for x in readings])
 
+	print("list length: {}".format(len(bsn_data)))
+	print("item length: {}".format(len(bsn_data[0])))
+			
 	# initialize filter
 	# (all constructor parameters have defaults, and pykalman supposedly does a
 	# good job of estimating them, so we will be lazy until there is a need to
 	# define the initial parameters)
-	bsn_kfilter = KalmanFilter(n_dim_obs = len(data_format))
+	print("Number of items to smooth: {}".format(len(bsn_data)))
+	bsn_kfilter = KalmanFilter(
+		n_dim_state = len(bsn_data[0]),
+		n_dim_obs = len(bsn_data),
+		em_vars = 'all'
+		#[
+		#	'transition_matrices', 'observation_matrices',
+		#	'transition_covariance', 'observation_covariance',
+		#	'observation_offsets', 'initial_state_mean',
+		#	'initial_state_covariance'
+    	#]
+    )
 	
 	# perform parameter estimation and do predictions
-	filtered_bsn_data = bsn_kfilter.em(bsn_data, 'all').smooth(bsn_data)[0]
+	print("Estimating parameters...")
+	bsn_kfilter.em(X = bsn_data)
+	print("Creating smoothed estimates...")
+	filtered_bsn_data = bsn_kfilter.smooth(bsn_data)[0]
+	print(type(filtered_bsn_data))
+	print(filtered_bsn_data)
+	print(type(filtered_bsn_data[0]))
+	print(filtered_bsn_data[0])
 
 	# write the data to a new file
 	with open(FILTERED_BSN_DATA_FILE_NAME, "wb") as filtered_file:
