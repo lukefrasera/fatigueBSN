@@ -46,15 +46,16 @@ def main():
 
 
 	# interpolate the data
-	merged_data = interpolate_data(imu_data, mindwave_data, heart_data)
+	#merged_data = interpolate_data(imu_data, mindwave_data, heart_data)
 
 
 def interpolate_data(leader_data, *other_data_lists):
-	# maps from list (0 for leader_data or varargs_index + 1) to indices of
-	# first and last data points to be used
-	bounding_indices = {}
+	pass
+
+	
+	
 
 	
 
 if __name__ == '__main__':
-  main()
+	main()
