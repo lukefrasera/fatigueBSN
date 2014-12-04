@@ -1,4 +1,4 @@
-import socket, traceback
+import socket, traceback, sys
 
 class AndroidImuDataPoint:
     def __init__(self, dataFromAppAsString):
@@ -45,7 +45,7 @@ s.bind((host, port))
 #used for debugging
 
 print("Success binding")
-with open('android_imu_data.csv', "w") as data_file:
+with open(sys.argv[1], "w") as data_file:
     try:
         while True:
             message, address = s.recvfrom(8192)
