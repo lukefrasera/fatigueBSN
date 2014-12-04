@@ -40,21 +40,20 @@ def main():
     heart_file = sys.argv[3]
 
   # Read data from IMU file
-  imu_data      , fmt= unpack_binary_data_into_list(imu_file)
-  mindwave_data , fmt= unpack_binary_data_into_list(mindwave_file)
-  heart_data    , fmt= unpack_binary_data_into_list(heart_file)
-
-  # print heart_data
-  # print imu_data
-  # print mindwave_data
+  imu_data      , fmt_imu  = unpack_binary_data_into_list(imu_file)
+  mindwave_data , fmt_mind = unpack_binary_data_into_list(mindwave_file)
+  heart_data    , fmt_heart= unpack_binary_data_into_list(heart_file)
 
   # interpolate the data
   merged_data = interpolate_data(imu_data, heart_data)
 
-  print merged_data[120]
-
-  print heart_data[0][0]
-  print imu_data[0][0]
+  # Save data
+  f = open(sys.argv[1], 'wb')
+  fmt_merge = fmt_imu + fmt_mind + fmt_heart if fmt_heart else ''
+  f.write(fmt_merge.ljust(25,' '))
+  for row in merged_data:
+    f.write(struct.pack(fmt_merge, *row))
+  f.close()
 
 
 def interpolate_data(leader_data, *data_lists):
