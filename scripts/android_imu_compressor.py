@@ -39,12 +39,12 @@ def main():
 
 
 def line_to_clean_data(line):
-	if '4,' is not in line:
+	if not '4,' in line:
 		return None
 	else:
 		items_as_text = line.split(",")
 
-		if len(items_as_text) <= 13: # expected number of items in line
+		if len(items_as_text) < 13: # expected number of items in line
 			return None
 
 		item_values = [float(x) for x in items_as_text]
@@ -58,8 +58,6 @@ def line_to_clean_data(line):
 		data_items.append(item_values[6]) # gyroscope x
 		data_items.append(item_values[7]) # gyroscope y
 		data_items.append(item_values[8]) # gyroscope z
-
-		print data_items
 
 		return data_items
 
