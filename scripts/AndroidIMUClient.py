@@ -1,6 +1,6 @@
-import socket, traceback, sys
+import socket, sys
 
-class AndroidImuDataPoint:
+class AndroidImuDataPoint(object):
     def __init__(self, dataFromAppAsString):
         data = dataFromAppAsString.split(",")
         
