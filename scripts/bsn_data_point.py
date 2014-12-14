@@ -23,9 +23,9 @@ BSN_EMISSION_ALPHABET = Alphabet(
 )
 
 # Discretization thresholds
-HIGH_ALPHA_FATIQUE_FREQUENCY = 100  # TODO
+HIGH_ALPHA_FATIGUE_FREQUENCY = 100  # TODO
 LOW_ALPHA_FATIGUE_FREQUENCY = 100   # TODO
-HEART_RATE_FATIGUE_LEVEL = 90       # TODO
+HEART_RATE_FATIGUE_LEVEL = 180      # TODO
 TORSO_FATIGUE_ANGLE = 30            # TODO
 
 
@@ -40,7 +40,7 @@ class BSNDataPoint(object):
         self.label = label
 
     def get_high_alpha_category(self):
-        if self.high_alpha <= HIGH_ALPHA_FATIQUE_FREQUENCY:
+        if self.high_alpha <= HIGH_ALPHA_FATIGUE_FREQUENCY:
             return "a"
         else:
             return "b"

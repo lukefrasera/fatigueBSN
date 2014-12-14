@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-
-import sys
-
-import mergeSensorData as msd
-
-import numpy as np
 import pylab as pl
+
+import merge_sensor_data as msd
 
 def main():
 	data = msd.unpack_binary_data_into_list(
-		'/home/t/Desktop/fatigueBSN/fatigue_test_data/Terrence/12_03_2002_mind.dat'
+		'/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_mind.dat'
 	)
 
-	
-	
 	low_alpha_data = [x[3] for x in data[0]]
 	high_alpha_data = [x[4] for x in data[0]]
 

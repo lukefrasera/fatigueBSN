@@ -76,9 +76,9 @@ def main():
         ]
 
     if not probabilities_sum_to_one(non_fatigue_emission_probabilities):
-        print 'FIX THE NON-FATIGUE PROBS!!!!'
+        raise Exception('FIX THE NON-FATIGUE PROBS!!!!')
     if not probabilities_sum_to_one(fatigue_emission_probabilities):
-        print 'FIX THE FATIGUE PROBS!!!!'
+        raise Exception('FIX THE FATIGUE PROBS!!!!')
 
     # aka B
     emission_likelihood_matrix = [non_fatigue_emission_probabilities,
