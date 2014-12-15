@@ -1,4 +1,6 @@
-import socket, sys
+import socket
+import sys
+
 
 class AndroidImuDataPoint(object):
     def __init__(self, dataFromAppAsString):
