@@ -6,7 +6,6 @@
     Time, label, Low-Alpha, High-Alpha, Heart Rate, IMU angle
 """
 
-import sys
 import struct
 
 # import reaction_test_visualizer as rtv
@@ -16,13 +15,15 @@ LUKE_FILES = [
     '../fatigue_test_data/Luke/12_03_2240_reaction.dat',
     '../fatigue_test_data/Luke/12_03_2202_heart.dat',
     '../fatigue_test_data/Luke/12_03_2227_mind.dat',
-    '../fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat'
+    '../fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat',
+    '../fatigue_test_data/Luke/12_03_2002_merged.dat'
 ]
 TERENCE_FILES = [
     '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat',
     '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_heart.dat',
     '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_mind.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_cleaned_imu.dat'
+    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_cleaned_imu.dat',
+    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_merged.dat'
 ]
 
 def main():
@@ -30,34 +31,21 @@ def main():
 
     # load files
     # load IMU
-    imu_file = sys.argv[1]
+    imu_file = files[3]
     imu_data = []
 
     # Mindwave
-    mindwave_file = sys.argv[2]
+    mindwave_file = files[2]
 
     # Heartrate depending on the length of sys.argc
-    heart_file = None
-    heart_data = []
-    if len(sys.argv) >= 4:
-      heart_file = sys.argv[3]
+    heart_file = files[1]
 
     # Read data from IMU file
     imu_data, fmt_imu = unpack_binary_data_into_list(imu_file)
     mindwave_data, fmt_mind = unpack_binary_data_into_list(mindwave_file)
     heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
 
-    # imu_data, fmt = unpack_binary_data_into_list(files[3])
-    # # imu_data = [(x[0], x[4:7]integrate or something for xyz in imu_data]
-    # eeg_data, fmt = unpack_binary_data_into_list(files[2])[0]
-    # eeg_data = [(x[0], x[3], x[4]) for x in eeg_data]
-    # heart_rate_data, fmt = unpack_binary_data_into_list(files[1])[0]
-    # heart_data = [(x[0], float(x[1])) for x in heart_data]
-    # reaction_data = rtv.read_reaction_data_into_list(files[0])
-
-    # interpolate the data
-
-    imu_data = [(x[0], sum(x[4:7])) for x in imu_data] # itegrate
+    imu_data = [(x[0], sum(x[4:7])) for x in imu_data] # integrate
     mindwave_data = [(x[0], x[3], x[4]) for x in mindwave_data]
     heart_data = [(x[0], float(x[1])) for x in heart_data]
     merged_data = interpolate_data(imu_data, heart_data, mindwave_data)
@@ -66,11 +54,12 @@ def main():
     # tagged_data = tag_data(files[0], merged_data)
 
     # Save data
-    f = open(sys.argv[1], 'wb')
+    f = open(files[4], 'wb')
     fmt_merge = 'd' * len(merged_data)
     f.write(fmt_merge.ljust(25, ' '))
     for row in merged_data:
         f.write(struct.pack(fmt_merge, *row))
+        print row
     f.close()
 
 
@@ -92,7 +81,7 @@ def packed_structs_from_file(file_, struct_size):
     while True:
         struct_data = file_.read(struct_size)
         if struct_data:
-            yield struct_data
+            yield list(struct_data)
         else:
             break
     yield None
