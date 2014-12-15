@@ -19,11 +19,11 @@ LUKE_FILES = [
     '../fatigue_test_data/Luke/12_03_2002_merged.dat'
 ]
 TERENCE_FILES = [
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_heart.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_mind.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_cleaned_imu.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_merged.dat'
+    '../fatigue_test_data/Terence/12_03_2002_reaction.dat',
+    '../fatigue_test_data/Terence/12_03_2002_heart.dat',
+    '../fatigue_test_data/Terence/12_03_2002_mind.dat',
+    '../fatigue_test_data/Terence/12_03_2002_cleaned_imu.dat',
+    '../fatigue_test_data/Terence/12_03_2002_merged.dat'
 ]
 
 def main():
