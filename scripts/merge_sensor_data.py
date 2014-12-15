@@ -9,14 +9,14 @@
 import sys
 import struct
 
-import reaction_test_visualizer as rtv
+# import reaction_test_visualizer as rtv
 
 
 LUKE_FILES = [
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2202_heart.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2227_mind.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat'
+    '../fatigue_test_data/Luke/12_03_2240_reaction.dat',
+    '../fatigue_test_data/Luke/12_03_2202_heart.dat',
+    '../fatigue_test_data/Luke/12_03_2227_mind.dat',
+    '../fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat'
 ]
 TERENCE_FILES = [
     '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat',
@@ -48,19 +48,22 @@ def main():
     heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
 
 
-    imu_data, fmt = unpack_binary_data_into_list(files[3])
-    # imu_data = [(x[0], x[4:7]integrate or something for xyz in imu_data]
-    eeg_data, fmt = unpack_binary_data_into_list(files[2])[0]
-    eeg_data = [(x[0], x[3], x[4]) for x in eeg_data]
-    heart_rate_data, fmt = unpack_binary_data_into_list(files[1])[0]
-    heart_data = [(x[0], float(x[1])) for x in heart_data]
-    reaction_data = rtv.read_reaction_data_into_list(files[0])
+    # imu_data, fmt = unpack_binary_data_into_list(files[3])
+    # # imu_data = [(x[0], x[4:7]integrate or something for xyz in imu_data]
+    # eeg_data, fmt = unpack_binary_data_into_list(files[2])[0]
+    # eeg_data = [(x[0], x[3], x[4]) for x in eeg_data]
+    # heart_rate_data, fmt = unpack_binary_data_into_list(files[1])[0]
+    # heart_data = [(x[0], float(x[1])) for x in heart_data]
+    # reaction_data = rtv.read_reaction_data_into_list(files[0])
 
     # interpolate the data
-    merged_data = interpolate_data(imu_data, heart_data, eeg_data)
+
+    imu_data = [] # itegrate
+    mindwave_data
+    merged_data = interpolate_data(imu_data, heart_data, mindwave_data)
 
     # times_and_lables = rtv.generate_labels_with_times(reaction_data=reaction_data, reaction_time_threshold=.1)
-    tagged_data = tag_data(files[0], merged_data)
+    # tagged_data = tag_data(files[0], merged_data)
 
 
     # Save data
