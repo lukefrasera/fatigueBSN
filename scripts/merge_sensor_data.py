@@ -27,7 +27,8 @@ TERENCE_FILES = [
 ]
 
 def main():
-    files = TERENCE_FILES
+    # files = TERENCE_FILES
+    files = LUKE_FILES
 
     # load files
     # load IMU
@@ -45,21 +46,22 @@ def main():
     mindwave_data, fmt_mind = unpack_binary_data_into_list(mindwave_file)
     heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
 
-    imu_data = [(x[0], sum(x[4:7])) for x in imu_data] # integrate
-    mindwave_data = [(x[0], x[3], x[4]) for x in mindwave_data]
-    heart_data = [(x[0], float(x[1])) for x in heart_data]
+    imu_data = [[x[0], sum(x[4:7])] for x in imu_data] # integrate
+    mindwave_data = [[x[0], x[3], x[4]] for x in mindwave_data]
+    heart_data = [[x[0], float(x[1])] for x in heart_data]
     merged_data = interpolate_data(imu_data, heart_data, mindwave_data)
 
     # times_and_lables = rtv.generate_labels_with_times(reaction_data=reaction_data, reaction_time_threshold=.1)
     # tagged_data = tag_data(files[0], merged_data)
 
     # Save data
+    print len(merged_data)
     f = open(files[4], 'wb')
-    fmt_merge = 'd' * len(merged_data)
+    fmt_merge = 'd' * len(merged_data[0])
     f.write(fmt_merge.ljust(25, ' '))
     for row in merged_data:
         f.write(struct.pack(fmt_merge, *row))
-        print row
+        # print row
     f.close()
 
 
@@ -81,7 +83,7 @@ def packed_structs_from_file(file_, struct_size):
     while True:
         struct_data = file_.read(struct_size)
         if struct_data:
-            yield list(struct_data)
+            yield struct_data
         else:
             break
     yield None
