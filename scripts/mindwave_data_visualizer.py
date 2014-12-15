@@ -18,20 +18,22 @@ def main():
 	for i in range(len(low_alpha_data)):
 		differences.append(high_alpha_data[i] - low_alpha_data[i])
 
-	pl.plot(range(len(differences)), differences, label = 'differences')
-#	pl.plot(range(len(low_alpha_data)), low_alpha_data, label = 'Low')
+	pl.plot(range(len(high_alpha_data)), high_alpha_data, label = 'High Alpha')
+	pl.plot(range(len(low_alpha_data)), low_alpha_data, label = 'Low Alpha')
 	pl.xlabel("Time Step")
-	pl.ylabel("Reading Value")
+	pl.ylabel("Reading Value (Hz)")
+	pl.title("Alpha EEG Readings")
+
 	legend = pl.legend(loc='best', ncol=2, shadow=None)
 	legend.get_frame().set_facecolor('#00FFCC')
 	pl.show()
-	
-	pl.plot(range(len(high_alpha_data)), high_alpha_data, label = 'High')
-	pl.xlabel("Time Step")
-	pl.ylabel("Reading Value")
-	legend = pl.legend(loc='best', ncol=2, shadow=None)
-	legend.get_frame().set_facecolor('#00FFCC')
-	pl.show()
+
+	# pl.plot(range(len(high_alpha_data)), high_alpha_data, label = 'High')
+	# pl.xlabel("Time Step")
+	# pl.ylabel("Reading Value")
+	# legend = pl.legend(loc='best', ncol=2, shadow=None)
+	# legend.get_frame().set_facecolor('#00FFCC')
+	# pl.show()
 	
 	
   # plot data

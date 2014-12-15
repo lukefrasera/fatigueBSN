@@ -8,10 +8,12 @@ from bsn_data_point import NON_FATIGUE_LABEL
 from bsn_data_point import FATIGUE_LABEL
 
 
+LUKE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat'
+TERENCE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat'
+
+
 def main():
-	data = read_reaction_data_into_list(
-		'/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat'
-	)
+	data = read_reaction_data_into_list(TERENCE_FILE)
 
 	for item in generate_labels_with_times(data, 1.1):  # TODO: find a better threshold
 		print("{}: {}".format(item[0], item[1]))
@@ -25,6 +27,7 @@ def main():
 	pl.plot(range(len(data)), accuracy, label='reaction accuracy')
 	pl.xlabel("Time Step")
 	pl.ylabel("Reaction Value")
+	pl.title('Heart Rate Data')
 	legend = pl.legend(loc='best', ncol=2, shadow=None)
 	legend.get_frame().set_facecolor('#00FFCC')
 	pl.show()

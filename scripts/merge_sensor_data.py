@@ -1,9 +1,50 @@
 #!/usr/bin/env python
 
+""" Merges data into a format ready for data processing.
+
+    Final Data Format (?):
+    Time, label, Low-Alpha, High-Alpha, Heart Rate, IMU angle
+"""
+
 import sys
 import struct
-import bsn_data_point
+
 import reaction_test_visualizer as rtv
+
+
+LUKE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat'
+TERENCE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat'
+
+
+def main():
+    # load files
+    # load IMU
+    imu_file = sys.argv[1]
+    imu_data = []
+    # Mindwave
+    mindwave_file = sys.argv[2]
+
+    # Heartrate depending on the length of sys.argc
+    heart_file = None
+    heart_data = []
+    if len(sys.argv) >= 4:
+      heart_file = sys.argv[3]
+
+    # Read data from IMU file
+    imu_data, fmt_imu = unpack_binary_data_into_list(imu_file)
+    mindwave_data, fmt_mind = unpack_binary_data_into_list(mindwave_file)
+    heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
+
+    # interpolate the data
+    merged_data = interpolate_data(imu_data, heart_data)
+
+    # Save data
+    f = open(sys.argv[1], 'wb')
+    fmt_merge = fmt_imu + fmt_mind + fmt_heart if fmt_heart else ''
+    f.write(fmt_merge.ljust(25, ' '))
+    for row in merged_data:
+        f.write(struct.pack(fmt_merge, *row))
+    f.close()
 
 
 def unpack_binary_data_into_list(file_name):
@@ -28,35 +69,6 @@ def packed_structs_from_file(file_, struct_size):
         else:
             break
     yield None
-
-
-def main():
-    # load files
-    # load IMU
-    imu_file = sys.argv[1]
-    imu_data = []
-    # Mindwave
-    mindwave_file = sys.argv[2]
-
-    # Heartrate depending on the length of sys.argc
-    heart_file = None
-    heart_data = []
-    if len(sys.argv) >= 4:
-      heart_file = sys.argv[3]
-
-    # Read data from IMU file
-    imu_data, fmt_imu = unpack_binary_data_into_list(imu_file)
-    mindwave_data, fmt_mind = unpack_binary_data_into_list(mindwave_file)
-    heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
-    # interpolate the data
-    merged_data = interpolate_data(imu_data, heart_data)
-    # Save data
-    f = open(sys.argv[1], 'wb')
-    fmt_merge = fmt_imu + fmt_mind + fmt_heart if fmt_heart else ''
-    f.write(fmt_merge.ljust(25, ' '))
-    for row in merged_data:
-      f.write(struct.pack(fmt_merge, *row))
-    f.close()
 
 
 def interpolate_data(leader_data, *data_lists):
@@ -106,9 +118,9 @@ def interpolate(time, low_val_list, high_val_list):
     return result
 
 
-def tag_data(labels, data):
+def tag_data(reaction_data_file_name, data):
     reaction_data = rtv.generate_labels_with_times(
-        rtv.read_reaction_data_into_list('/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat'),
+        rtv.read_reaction_data_into_list(reaction_data_file_name),
         1.1
     )
     tagged_data = []

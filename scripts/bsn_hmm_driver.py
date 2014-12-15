@@ -3,20 +3,31 @@
 __author__ = 't'
 
 import collections
-import struct
-from bsn_data_point import BSN_EMISSION_ALPHABET, BSNDataPoint
+
 from ghmm import *
 
-DATA_FORMAT_STRING = 'ddddddddd'
+from bsn_data_point import BSN_EMISSION_ALPHABET, BSNDataPoint
+import merge_sensor_data as msd
 
 
 def main():
     # TODO: get a list of data points
-    data_points = unpack_binary_data_into_list("training.dat")
+    data_points = msd.unpack_binary_data_into_list("training.dat")
 
     print 'number of time stamps: ', len(data_points)
     print 'duration of experiment: ',\
         data_points[len(data_points) - 1].timestamp - data_points[0].timestamp
+
+    sampled_data = [
+        BSNDataPoint(
+            timestamp=x[0],
+            label=x[1],
+            heart_rate=x[2],
+            low_alpha_frequency=x[3],
+            high_alpha_frequency=x[4],
+            torso_position=x[5]
+        ) for x in data_points
+    ]
 
     training_emissions = \
         [point.to_discrete_emission_string() for point in data_points]
@@ -37,19 +48,19 @@ def main():
 
     non_fatigue_emission_probabilities = \
         [
-            0.01,  # aaaa
-            0.01,  # aaab
-            0.01,  # aaba
-            0.01,  # aabb
-            0.01,  # abaa
-            0.01,  # abab
-            0.01,  # abba
+            0.25,  # aaaa
+            0.10,  # aaab
+            0.10,  # aaba
+            0.05,  # aabb
+            0.10,  # abaa
+            0.05,  # abab
+            0.05,  # abba
             0.01,  # abbb
-            0.01,  # baaa
-            0.01,  # baab
-            0.01,  # baba
+            0.10,  # baaa
+            0.05,  # baab
+            0.05,  # baba
             0.01,  # babb
-            0.01,  # bbaa
+            0.05,  # bbaa
             0.01,  # bbab
             0.01,  # bbba
             0.01   # bbbb
@@ -60,19 +71,19 @@ def main():
             0.01,  # aaaa
             0.01,  # aaab
             0.01,  # aaba
-            0.01,  # aabb
+            0.05,  # aabb
             0.01,  # abaa
-            0.01,  # abab
-            0.01,  # abba
-            0.01,  # abbb
+            0.05,  # abab
+            0.05,  # abba
+            0.10,  # abbb
             0.01,  # baaa
-            0.01,  # baab
-            0.01,  # baba
-            0.01,  # babb
-            0.01,  # bbaa
-            0.01,  # bbab
-            0.01,  # bbba
-            0.01   # bbbb
+            0.05,  # baab
+            0.05,  # baba
+            0.10,  # babb
+            0.05,  # bbaa
+            0.10,  # bbab
+            0.10,  # bbba
+            0.25   # bbbb
         ]
 
     if not probabilities_sum_to_one(non_fatigue_emission_probabilities):
@@ -116,42 +127,9 @@ def main():
     # print determine_percent_correct( ... )
 
 
-def unpack_binary_data_into_list(file_name):
-    data_points = []
-    struct_size = struct.calcsize(DATA_FORMAT_STRING)
-
-    for packed_struct in packed_structs_from_file(file_name, struct_size):
-        if packed_struct is not None:
-            data_tuple = struct.unpack(DATA_FORMAT_STRING, packed_struct)
-            print "data: {}".format(data_tuple)
-            data_points.append(BSNDataPoint(
-                data_tuple[0],  # timestamp
-                data_tuple[1],
-                data_tuple[4],  # alpha frequency
-                data_tuple[1],  # attention level
-                data_tuple[3]   # torso position TODO: testing using arbitrary
-            ))
-
-    return data_points
-
-
-def packed_structs_from_file(filename, struct_size):
-    with open(filename, "rb") as data_file:
-        while True:
-            struct_data = data_file.read(struct_size)
-            if struct_data:
-                yield struct_data
-            else:
-                break
-    yield None
-
-
 def probabilities_sum_to_one(probability_vector):
-    sum = 0.0
-    for probability in probability_vector:
-        sum += probability
+    return sum(probability_vector) == 1.0
 
-    return sum == 1.0
 
 def determine_percent_correct(input_list, output_list):
     num_correct = 0
