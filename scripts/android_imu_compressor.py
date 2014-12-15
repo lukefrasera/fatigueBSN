@@ -32,7 +32,6 @@ def main():
 					out_file.write(
 						struct.pack(ANDROID_IMU_DATA_FORMAT_STRING, *clean_data)
 					)
-				line = in_file.readline()
 			in_file.close()
 		out_file.close()
 
