@@ -47,15 +47,15 @@ def line_to_clean_data(line):
 
 		item_values = [float(x) for x in items_as_text]
 
-		data_items = []
-
-		data_items.append(item_values[0]) # time stamp
-		data_items.append(item_values[2]) # accelerometer x
-		data_items.append(item_values[3]) # accelerometer y
-		data_items.append(item_values[4]) # accelerometer z
-		data_items.append(item_values[6]) # gyroscope x
-		data_items.append(item_values[7]) # gyroscope y
-		data_items.append(item_values[8]) # gyroscope z
+		data_items = [
+			item_values[0],  # time stamp
+			item_values[2],  # accelerometer x
+			item_values[3],  # accelerometer y
+			item_values[4],  # accelerometer z
+			item_values[6],  # gyroscope x
+			item_values[7],  # gyroscope y
+			item_values[8]   # gyroscope z
+		]
 
 		return data_items
 

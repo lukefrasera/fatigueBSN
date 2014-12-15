@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-from mergeSensorData import unpack_binary_data_into_list
+from merge_sensor_data import unpack_binary_data_into_list
 import numpy as np
 from pykalman import KalmanFilter
 import struct
