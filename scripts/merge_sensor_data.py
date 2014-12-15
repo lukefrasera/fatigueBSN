@@ -9,14 +9,14 @@
 import sys
 import struct
 
-import reaction_test_visualizer as rtv
+# import reaction_test_visualizer as rtv
 
 
 LUKE_FILES = [
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2202_heart.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2227_mind.dat',
-    '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat'
+    '../fatigue_test_data/Luke/12_03_2240_reaction.dat',
+    '../fatigue_test_data/Luke/12_03_2202_heart.dat',
+    '../fatigue_test_data/Luke/12_03_2227_mind.dat',
+    '../fatigue_test_data/Luke/12_03_2002_cleaned_imu.dat'
 ]
 TERENCE_FILES = [
     '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat',
@@ -47,24 +47,27 @@ def main():
     mindwave_data, fmt_mind = unpack_binary_data_into_list(mindwave_file)
     heart_data, fmt_heart = unpack_binary_data_into_list(heart_file)
 
-
-    imu_data, fmt = unpack_binary_data_into_list(files[3])
-    # imu_data = [(x[0], x[4:7]integrate or something for xyz in imu_data]
-    eeg_data, fmt = unpack_binary_data_into_list(files[2])
-    eeg_data = [(x[0], x[3], x[4]) for x in eeg_data]
-    heart_rate_data, fmt = unpack_binary_data_into_list(files[1])
-    heart_data = [(x[0], float(x[1])) for x in heart_data]
-    reaction_data = rtv.read_reaction_data_into_list(files[0])
+    # imu_data, fmt = unpack_binary_data_into_list(files[3])
+    # # imu_data = [(x[0], x[4:7]integrate or something for xyz in imu_data]
+    # eeg_data, fmt = unpack_binary_data_into_list(files[2])[0]
+    # eeg_data = [(x[0], x[3], x[4]) for x in eeg_data]
+    # heart_rate_data, fmt = unpack_binary_data_into_list(files[1])[0]
+    # heart_data = [(x[0], float(x[1])) for x in heart_data]
+    # reaction_data = rtv.read_reaction_data_into_list(files[0])
 
     # interpolate the data
-    merged_data = interpolate_data(imu_data, heart_data, eeg_data)
+
+    imu_data = [(x[0], sum(x[4:7])) for x in imu_data] # itegrate
+    mindwave_data = [(x[0], x[3], x[4]) for x in mindwave_data]
+    heart_data = [(x[0], float(x[1])) for x in heart_data]
+    merged_data = interpolate_data(imu_data, heart_data, mindwave_data)
 
     # times_and_lables = rtv.generate_labels_with_times(reaction_data=reaction_data, reaction_time_threshold=.1)
-    tagged_data = tag_data(files[0], merged_data)
+    # tagged_data = tag_data(files[0], merged_data)
 
     # Save data
     f = open(sys.argv[1], 'wb')
-    fmt_merge = fmt_imu + fmt_mind + fmt_heart if fmt_heart else ''
+    fmt_merge = 'd' * len(merged_data)
     f.write(fmt_merge.ljust(25, ' '))
     for row in merged_data:
         f.write(struct.pack(fmt_merge, *row))
@@ -142,19 +145,19 @@ def interpolate(time, low_val_list, high_val_list):
     return result
 
 
-def tag_data(reaction_data_file_name, data):
-    reaction_data = rtv.generate_labels_with_times(
-        rtv.read_reaction_data_into_list(reaction_data_file_name),
-        1.1
-    )
-    tagged_data = []
-    j = 0
-    for item in data:
-        if reaction_data[j + 1] < item[0]:
-            j += 1
-        tagged_data.append((reaction_data[j], item[2:]))
-
-    return tagged_data
+# def tag_data(reaction_data_file_name, data):
+#     reaction_data = rtv.generate_labels_with_times(
+#         rtv.read_reaction_data_into_list(reaction_data_file_name),
+#         1.1
+#     )
+#     tagged_data = []
+#     j = 0
+#     for item in data:
+#         if reaction_data[j + 1] < item[0]:
+#             j += 1
+#         tagged_data.append((reaction_data[j], item[2:]))
+#
+#     return tagged_data
 
 
 if __name__ == '__main__':
