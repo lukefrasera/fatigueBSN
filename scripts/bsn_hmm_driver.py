@@ -6,6 +6,8 @@ import collections
 
 from ghmm import *
 
+import pylab as pl
+
 from bsn_data_point import BSN_EMISSION_ALPHABET, BSNDataPoint
 import merge_sensor_data as msd
 
@@ -98,8 +100,8 @@ def main():
     # simply initialize the model
     bsn_hmm_model = HMMFromMatrices(
         emission_aplphabet,         # sigma: the alphabet
-        DiscreteDistribution(       # ???
-            emission_aplphabet
+        DiscreteDistribution(       # the DiscreteDistribution is for ghmm's
+            emission_aplphabet      # internals
         ),
         state_transition_matrix,     # A: state transitions model matrix
         emission_likelihood_matrix,  # B: emission likelihoods matrix
@@ -119,12 +121,27 @@ def main():
     # print bsn_hmm_model
 
     # when we are ready, we can try to use our model to predict the state
-    # of the BSN wearer TODO: there may be a problem with the viterbi
-    # print "State estimation on test_list after retraining:"
-    # test_labels = bsn_hmm_model.viterbi(test_emission)
+    # of the BSN wearer
+    # print "State estimation on test_list after retraining:
+    sample_emissions = EmissionSequence(
+        BSN_EMISSION_ALPHABET,
+        [x.to_discrete_emission_string() for x in sampled_data]
+    )
+    predicted_labels = bsn_hmm_model.viterbi(sample_emissions)
+    print determine_percent_correct(
+        [x.label for x in sampled_data],
+        predicted_labels
+    )
     # print test_labels
-    # print determine_most_likely_state(test_labels[0])
-    # print determine_percent_correct( ... )
+
+    pl.plot(range(len([1])), [1], label='Actual')
+    pl.plot(range(len([1])), [1], label='Predicted')
+    pl.xlabel("Time Step")
+    pl.ylabel("BSN Wearer State (Non-Fatigued or Fatigued)")
+    pl.title("BSN Fatigue State Prediction")
+    legend = pl.legend(loc='best', ncol=2, shadow=None)
+    legend.get_frame().set_facecolor('#00FFCC')
+    pl.show()
 
 
 def probabilities_sum_to_one(probability_vector):

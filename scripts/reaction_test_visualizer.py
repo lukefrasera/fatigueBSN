@@ -27,16 +27,16 @@ def main():
 	pl.plot(range(len(data)), accuracy, label='reaction accuracy')
 	pl.xlabel("Time Step")
 	pl.ylabel("Reaction Value")
-	pl.title('Heart Rate Data')
+	pl.title('Reaction Test Data')
 	legend = pl.legend(loc='best', ncol=2, shadow=None)
 	legend.get_frame().set_facecolor('#00FFCC')
 	pl.show()
 
 
-def generate_labels_with_times(data, reaction_time_threshold):
+def generate_labels_with_times(reaction_data, reaction_time_threshold):
 	labels = []
 	label = NON_FATIGUE_LABEL
-	for item in data:
+	for item in reaction_data:
 		if item[1] > reaction_time_threshold:
 			label = FATIGUE_LABEL
 		labels.append((item[0], label))

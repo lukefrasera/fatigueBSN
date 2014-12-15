@@ -6,14 +6,13 @@ import pylab as pl
 import merge_sensor_data as msd
 
 def main():
-	data = msd.unpack_binary_data_into_list(
+	data, fmt = msd.unpack_binary_data_into_list(
 		'/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_mind.dat'
 	)
 
-	low_alpha_data = [x[3] for x in data[0]]
-	high_alpha_data = [x[4] for x in data[0]]
+	low_alpha_data = [x[3] for x in data]
+	high_alpha_data = [x[4] for x in data]
 
-	
 	differences = []
 	for i in range(len(low_alpha_data)):
 		differences.append(high_alpha_data[i] - low_alpha_data[i])
