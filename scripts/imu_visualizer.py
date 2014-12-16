@@ -15,10 +15,14 @@ def main():
 	g_x = [x[4] for x in data]
 	g_y = [x[5] for x in data]
 	g_z = [x[6] for x in data]
+	sums = []
+	for i in range(len(g_z)):
+		sums.append(g_x[i] + g_y[i] + g_z[i])
 
 	pl.plot(range(len(g_x)), g_x, label='Gyroscope_x')
 	pl.plot(range(len(g_y)), g_y, label='Gyroscope_y')
 	pl.plot(range(len(g_z)), g_z, label='Gyroscope_z')
+	# pl.plot(range(len(g_z)), sums, label='sums')
 	pl.xlabel("Time Step")
 	pl.ylabel("Gyroscope Reading (Radians)")
 	pl.title("IMU Visualization")

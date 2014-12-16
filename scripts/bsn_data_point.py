@@ -23,10 +23,10 @@ BSN_EMISSION_ALPHABET = Alphabet(
 )
 
 # Discretization thresholds
-HIGH_ALPHA_FATIGUE_FREQUENCY = 100  # TODO
-LOW_ALPHA_FATIGUE_FREQUENCY = 100   # TODO
-HEART_RATE_FATIGUE_LEVEL = 160      # TODO
-TORSO_FATIGUE_ANGLE = 30            # TODO
+HIGH_ALPHA_FATIGUE_FREQUENCY = 200000  # TODO
+LOW_ALPHA_FATIGUE_FREQUENCY = 200000   # TODO
+HEART_RATE_FATIGUE_LEVEL = 120      # TODO
+TORSO_FATIGUE_ANGLE = 2             # TODO
 
 
 class BSNDataPoint(object):
@@ -58,7 +58,7 @@ class BSNDataPoint(object):
             return "b"
 
     def get_torso_category(self):
-        if self.torso <= TORSO_FATIGUE_ANGLE:
+        if abs(self.torso) <= TORSO_FATIGUE_ANGLE:
             return "a"
         else:
             return "b"

@@ -9,8 +9,8 @@ import string
 
 
 BSN_DATA_FILE_NAME =\
-	"/home/t/Desktop/fatigueBSN/fatigue_test_data/LukeFraser_Nov_30_IMU.dat"
-FILTERED_BSN_DATA_FILE_NAME = "filtered_bsn_data.dat"
+	"/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_merged.dat"
+FILTERED_BSN_DATA_FILE_NAME = "f/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_filtered_merged.dat"
 
 def main():
 	# get the data
@@ -27,11 +27,11 @@ def main():
 		n_dim_state = len(bsn_data[0]),
 		n_dim_obs = len(bsn_data[0]),
 		em_vars = 'all'
-    )
-	
+	)
+
 	# perform parameter estimation and do predictions
 	print("Estimating parameters...")
-	bsn_kfilter.em(X = bsn_data, n_iter = 5, em_vars = 'all')
+	bsn_kfilter.em(X=bsn_data, n_iter=5, em_vars = 'all')
 	print("Creating smoothed estimates...")
 	filtered_bsn_data = bsn_kfilter.smooth(bsn_data)[0]
 

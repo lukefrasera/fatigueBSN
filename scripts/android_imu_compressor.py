@@ -8,7 +8,7 @@ Data comes in as csv, data points will be turned into the format:
 	Time Stamp    Accelerometer     Gyroscope
 					x  y  z          x  y  z
 	=========================================
-        0           1  2  3          4  5  6
+	    0           1  2  3          4  5  6
 """
 
 ANDROID_IMU_DATA_FORMAT_STRING = 'ddddddd'

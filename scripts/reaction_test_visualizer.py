@@ -11,9 +11,8 @@ from bsn_data_point import FATIGUE_LABEL
 LUKE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat'
 TERENCE_FILE = '/home/t/Desktop/fatigueBSN/fatigue_test_data/Terence/12_03_2002_reaction.dat'
 
-
 def main():
-	data = read_reaction_data_into_list(TERENCE_FILE)
+	data = read_reaction_data_into_list('/home/t/Desktop/fatigueBSN/fatigue_test_data/Luke/12_03_2240_reaction.dat')
 
 	for item in generate_labels_with_times(data, 1.1):  # TODO: find a better threshold
 		print("{}: {}".format(item[0], item[1]))
