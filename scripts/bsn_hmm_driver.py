@@ -120,6 +120,7 @@ def main():
     )
 
     bsn_hmm_model.baumWelch(sample_emissions)
+    print bsn_hmm_model
 
     predicted_labels, log_likelihood = bsn_hmm_model.viterbi(sample_emissions)
     determine_percent_correct(
